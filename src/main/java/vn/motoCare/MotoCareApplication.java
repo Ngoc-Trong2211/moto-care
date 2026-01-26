@@ -1,0 +1,13 @@
+package vn.motoCare;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class MotoCareApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(MotoCareApplication.class, args);
+	}
+
+}
