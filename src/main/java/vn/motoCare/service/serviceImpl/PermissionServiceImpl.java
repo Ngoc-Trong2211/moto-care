@@ -97,6 +97,9 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public void handleDeletePermission(Long id) throws IdInvalidException {
+        PermissionEntity permission = this.permissionRepository.findById(id).orElseThrow(() -> new IdInvalidException("Quyền hạn này không tồn tại!"));
+        permission.getRoles().clear();
+        this.permissionRepository.deleteRelationshipPermissionId(permission.getId());
         this.permissionRepository.deleteById(id);
     }
 

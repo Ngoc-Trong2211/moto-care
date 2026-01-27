@@ -1,37 +1,43 @@
 package vn.motoCare.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import vn.motoCare.util.enumEntity.EnumMethodPermission;
 
 import java.time.Instant;
 import java.util.List;
 
-@Entity
 @Getter
 @Setter
-@Table(name = "tbl_permission")
-public class PermissionEntity {
+@Entity
+@Table(name = "tbl_role")
+public class RoleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String path;
-    private String entity;
-
-    @Enumerated(EnumType.STRING)
-    private EnumMethodPermission method;
-
+    private String name;
     private String description;
+    private boolean active;
+
     private Instant createdAt;
     private Instant updatedAt;
     private String createdBy;
     private String updatedBy;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "permissions")
+    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
     @JsonIgnore
-    private List<RoleEntity> roles;
+    public List<UserEntity> users;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "tbl_role_permission",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id")
+    )
+    @JsonIgnoreProperties(value = {"roles"})
+    private List<PermissionEntity> permissions;
+
 
     @PrePersist
     public void handleCreated(){
