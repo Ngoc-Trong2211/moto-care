@@ -8,8 +8,11 @@ import vn.motoCare.domain.response.ResponseSystem;
 
 @RestControllerAdvice
 public class GlobalHandleException {
-    @ExceptionHandler(IdInvalidException.class)
-    public ResponseEntity<ResponseSystem<Object>> handleExceptionInvalid(IdInvalidException ex){
+    @ExceptionHandler(value = {
+            IdInvalidException.class,
+            NameExistsException.class
+    })
+    public ResponseEntity<ResponseSystem<Object>> handleExceptionInvalid(Exception ex){
         ResponseSystem<Object> res = new ResponseSystem<>();
         res.setStatus(HttpStatus.BAD_REQUEST.value());
         res.setData(null);

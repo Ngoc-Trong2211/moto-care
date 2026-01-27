@@ -2,10 +2,24 @@ package vn.motoCare.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 import vn.motoCare.domain.PermissionEntity;
 import vn.motoCare.util.enumEntity.EnumMethodPermission;
+
+import java.util.List;
 
 public interface PermissionRepository extends JpaRepository<PermissionEntity, Long>, JpaSpecificationExecutor<PermissionEntity> {
     boolean existsByPathAndMethodAndEntity(String path, EnumMethodPermission method, String entity);
     boolean existsByPathAndMethodAndEntityAndIdNot(String path, EnumMethodPermission method, String entity, Long id);
+
+    @Query(value = "SELECT * FROM tbl_permission WHERE id in :permissionId", nativeQuery = true)
+    List<PermissionEntity> findByIdIn(@Param("permissionId") List<Long> permissionId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM tbl_role_permission WHERE permission_id = :permissionId", nativeQuery = true)
+    void deleteRelationshipPermissionId(@Param("permissionId") Long permissionId);
 }
