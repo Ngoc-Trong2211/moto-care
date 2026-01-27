@@ -10,7 +10,11 @@ import vn.motoCare.domain.response.ResponseSystem;
 public class GlobalHandleException {
     @ExceptionHandler(value = {
             IdInvalidException.class,
-            NameExistsException.class
+            NameExistsException.class,
+            PasswordMismatchException.class,
+            ChangePasswordException.class,
+            EmailAlreadyExistsException.class,
+            StatusIsActiveException.class
     })
     public ResponseEntity<ResponseSystem<Object>> handleExceptionInvalid(Exception ex){
         ResponseSystem<Object> res = new ResponseSystem<>();
