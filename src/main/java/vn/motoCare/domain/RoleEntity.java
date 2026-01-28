@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import vn.motoCare.service.serviceImpl.AuthServiceImpl;
 
 import java.time.Instant;
 import java.util.List;
@@ -42,12 +43,12 @@ public class RoleEntity {
     @PrePersist
     public void handleCreated(){
         this.createdAt = Instant.now();
-        this.createdBy = null;
+        this.createdBy = AuthServiceImpl.getCurrentUserLogin().isPresent() ? AuthServiceImpl.getCurrentUserLogin().get() : "";
     }
 
     @PreUpdate
     public void handleUpdated(){
         this.updatedAt = Instant.now();
-        this.updatedBy = null;
+        this.updatedBy = AuthServiceImpl.getCurrentUserLogin().isPresent() ? AuthServiceImpl.getCurrentUserLogin().get() : "";
     }
 }

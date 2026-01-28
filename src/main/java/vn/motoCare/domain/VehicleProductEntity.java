@@ -1,11 +1,12 @@
 package vn.motoCare.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import vn.motoCare.service.serviceImpl.AuthServiceImpl;
-import vn.motoCare.util.enumEntity.EnumMethodPermission;
+import vn.motoCare.util.enumEntity.EnumColor;
+import vn.motoCare.util.enumEntity.EnumProductType;
+import vn.motoCare.util.enumEntity.EnumStatusProduct;
 
 import java.time.Instant;
 import java.util.List;
@@ -13,26 +14,37 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Table(name = "tbl_permission")
-public class PermissionEntity {
+@Table(name = "tbl_prd_vehicle")
+public class VehicleProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String path;
-    private String entity;
+    private String brand;
+    private String model;
+    private String name;
+
+    @ElementCollection(targetClass = EnumColor.class)
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(
+            name = "tbl_vehicle_colors",
+            joinColumns = @JoinColumn(name = "vehicle_id")
+    )
+    @Column(name = "color")
+    private List<EnumColor> colors;
 
     @Enumerated(EnumType.STRING)
-    private EnumMethodPermission method;
+    private EnumStatusProduct status;
 
-    private String description;
+    @Enumerated(EnumType.STRING)
+    private EnumProductType type;
+
+    private long price;
+    private int quantity;
+
     private Instant createdAt;
     private Instant updatedAt;
     private String createdBy;
     private String updatedBy;
-
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "permissions")
-    @JsonIgnore
-    private List<RoleEntity> roles;
 
     @PrePersist
     public void handleCreated(){
