@@ -71,7 +71,6 @@ public class PermissionServiceImpl implements PermissionService {
         )) {
             throw new IdInvalidException("Permission đã tồn tại!");
         }
-
         permission.setPath(req.getPath());
         permission.setEntity(req.getEntity());
         permission.setMethod(req.getMethod());

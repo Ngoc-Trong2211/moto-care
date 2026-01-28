@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import vn.motoCare.util.enumEntity.EnumColor;
-import vn.motoCare.util.enumEntity.EnumProductType;
 import vn.motoCare.util.enumEntity.EnumStatusProduct;
 
 import java.util.List;
@@ -27,9 +26,6 @@ public class CreateVehicleProductRequest {
 
     @NotNull
     private EnumStatusProduct status;
-
-    @NotNull
-    private EnumProductType type;
 
     @NotNull
     private long price;
