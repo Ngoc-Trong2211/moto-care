@@ -23,6 +23,9 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     private StatusEnumUser status;
 
+    @Column(columnDefinition = "MEDIUMTEXT")
+    private String refreshToken;
+
     private Instant createdAt;
     private Instant updatedAt;
     private String createdBy;

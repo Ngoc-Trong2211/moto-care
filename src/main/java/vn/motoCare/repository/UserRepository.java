@@ -18,4 +18,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>, JpaSpec
 
     @Query(value = "SELECT EXISTS(SELECT 1 FROM tbl_user WHERE email = :email)", nativeQuery = true)
     Long existsByEmail(@Param("email") String email);
+
+    UserEntity findUserByEmailAndRefreshToken(String email, String refresh);
 }

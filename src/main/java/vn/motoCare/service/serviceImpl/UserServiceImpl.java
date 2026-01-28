@@ -8,6 +8,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import vn.motoCare.domain.RoleEntity;
 import vn.motoCare.domain.UserEntity;
 import vn.motoCare.domain.request.user.UserChangePassword;
@@ -50,6 +52,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean existsByEmail(String email) {
         return this.userRepository.existsByEmail(email)==1;
+    }
+
+    @Override
+    public UserEntity findUserByEmailAndRefreshToken(String email, String refreshToken) {
+        return this.userRepository.findUserByEmailAndRefreshToken(email, refreshToken);
     }
 
     @Override
@@ -182,6 +189,24 @@ public class UserServiceImpl implements UserService {
                 }
             }
             else throw new ChangePasswordException("Email không khớp với email bạn đăng kí");
+        }
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public int increaseFail(UserEntity user) {
+        int tries = user.getFailedTry() + 1;
+        user.setFailedTry(tries);
+        if (tries >= 5) user.setStatus(StatusEnumUser.LOCKED);
+        this.userRepository.save(user);
+        return tries;
+    }
+
+    @Override
+    public void handleUpdateRefreshToken(UserEntity user, String refreshToken) {
+        if (user != null){
+            user.setRefreshToken(refreshToken);
+            this.userRepository.save(user);
         }
     }
 }

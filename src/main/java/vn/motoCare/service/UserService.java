@@ -25,4 +25,7 @@ public interface UserService {
     UserEntity checkStatusUser(Long id);
     void handleChangePassword(UserChangePassword req, Long id) throws ChangePasswordException, PasswordMismatchException;
     boolean existsByEmail(String email);
+    int increaseFail(UserEntity user);
+    void handleUpdateRefreshToken(UserEntity user, String refreshToken);
+    UserEntity findUserByEmailAndRefreshToken(String email, String refreshToken);
 }
