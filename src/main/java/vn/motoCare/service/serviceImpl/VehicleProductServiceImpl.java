@@ -44,7 +44,7 @@ public class VehicleProductServiceImpl implements VehicleProductService {
         entity.setModel(req.getModel());
         entity.setName(req.getName());
         entity.setColors(req.getColors());
-        entity.setStatus(req.getStatus());
+        entity.setStatus(EnumStatusProduct.AVAILABLE);
         entity.setType(EnumProductType.MOTOR);
         entity.setPrice(req.getPrice());
         entity.setQuantity(req.getQuantity());
