@@ -31,7 +31,8 @@ public class GlobalHandleException {
             ChangePasswordException.class,
             EmailAlreadyExistsException.class,
             StatusIsActiveException.class,
-            RefreshTokenInvalidException.class
+            RefreshTokenInvalidException.class,
+            PermissionInvalidException.class
     })
     public ResponseEntity<ResponseSystem<Object>> handleExceptionInvalid(Exception ex){
         ResponseSystem<Object> res = new ResponseSystem<>();
