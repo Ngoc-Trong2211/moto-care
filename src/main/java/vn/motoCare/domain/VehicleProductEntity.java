@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import vn.motoCare.service.serviceImpl.AuthServiceImpl;
 import vn.motoCare.util.enumEntity.EnumColor;
-import vn.motoCare.util.enumEntity.EnumProductType;
 import vn.motoCare.util.enumEntity.EnumStatusProduct;
 
 import java.time.Instant;
@@ -34,9 +33,6 @@ public class VehicleProductEntity {
 
     @Enumerated(EnumType.STRING)
     private EnumStatusProduct status;
-
-    @Enumerated(EnumType.STRING)
-    private EnumProductType type;
 
     private long price;
     private int quantity;
