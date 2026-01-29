@@ -16,7 +16,6 @@ import vn.motoCare.domain.response.vehiclePrd.UpdateVehicleProductResponse;
 import vn.motoCare.repository.VehicleProductRepository;
 import vn.motoCare.service.VehicleProductService;
 import vn.motoCare.service.specification.VehicleProductSpecification;
-import vn.motoCare.util.enumEntity.EnumProductType;
 import vn.motoCare.util.enumEntity.EnumStatusProduct;
 import vn.motoCare.util.exception.IdInvalidException;
 
@@ -45,7 +44,6 @@ public class VehicleProductServiceImpl implements VehicleProductService {
         entity.setName(req.getName());
         entity.setColors(req.getColors());
         entity.setStatus(EnumStatusProduct.AVAILABLE);
-        entity.setType(EnumProductType.MOTOR);
         entity.setPrice(req.getPrice());
         entity.setQuantity(req.getQuantity());
 
@@ -62,7 +60,6 @@ public class VehicleProductServiceImpl implements VehicleProductService {
         res.setName(entity.getName());
         res.setColors(entity.getColors());
         res.setStatus(entity.getStatus());
-        res.setType(entity.getType());
         res.setPrice(entity.getPrice());
         res.setQuantity(entity.getQuantity());
         res.setCreatedAt(entity.getCreatedAt());
@@ -91,7 +88,6 @@ public class VehicleProductServiceImpl implements VehicleProductService {
         entity.setName(req.getName());
         entity.setColors(req.getColors());
         entity.setStatus(req.getStatus());
-        entity.setType(EnumProductType.MOTOR);
         entity.setPrice(req.getPrice());
         entity.setQuantity(req.getQuantity());
 
@@ -108,7 +104,6 @@ public class VehicleProductServiceImpl implements VehicleProductService {
         res.setName(entity.getName());
         res.setColors(entity.getColors());
         res.setStatus(entity.getStatus());
-        res.setType(entity.getType());
         res.setPrice(entity.getPrice());
         res.setQuantity(entity.getQuantity());
         res.setUpdatedAt(entity.getUpdatedAt());
@@ -142,7 +137,6 @@ public class VehicleProductServiceImpl implements VehicleProductService {
                             p.setName(product.getName());
                             p.setColors(product.getColors());
                             p.setStatus(product.getStatus());
-                            p.setType(product.getType());
                             p.setPrice(product.getPrice());
                             p.setQuantity(product.getQuantity());
                             p.setCreatedAt(product.getCreatedAt());
