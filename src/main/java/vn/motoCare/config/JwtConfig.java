@@ -25,12 +25,12 @@ public class JwtConfig {
     }
 
     @Bean
-    private JwtEncoder jwtEncoder(){
+    public JwtEncoder jwtEncoder(){
         return new NimbusJwtEncoder(new ImmutableSecret<>(getSecretKey()));
     }
 
     @Bean
-    private JwtDecoder jwtDecoder(){
+    public JwtDecoder jwtDecoder(){
         NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder.withSecretKey(getSecretKey())
                 .macAlgorithm(AuthServiceImpl.JWT_ALGORITHM).build();
         return token -> {
