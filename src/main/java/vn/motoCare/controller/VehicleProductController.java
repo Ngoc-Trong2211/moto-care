@@ -58,9 +58,11 @@ public class VehicleProductController {
 
     @DeleteMapping("/vehicle-products/{id}")
     @ApiMessage(message = "Xóa vehicle product thành công")
-    public ResponseEntity<Void> deleteVehicleProduct(@PathVariable Long id)
+    public ResponseEntity<String> deleteVehicleProduct(@PathVariable Long id)
             throws IdInvalidException {
         vehicleProductService.handleDeleteVehicleProduct(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .body("Cập nhật thành công");
     }
 }

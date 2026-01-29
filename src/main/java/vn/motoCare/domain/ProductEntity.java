@@ -5,27 +5,26 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import vn.motoCare.service.serviceImpl.AuthServiceImpl;
+import vn.motoCare.util.enumEntity.EnumProductType;
 
 import java.time.Instant;
-import java.util.List;
 
 @Entity
 @Getter
 @Setter
-@Table(name = "tbl_agency")
-public class AgencyEntity {
+@Table(name = "tbl_product")
+public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String email;
-    private String address;
-    private int phone;
-    private boolean active;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "agency")
+    @Enumerated(EnumType.STRING)
+    private EnumProductType type;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "agency_id")
     @JsonIgnore
-    private List<ProductEntity> products;
+    private AgencyEntity agency;
 
     private Instant createdAt;
     private Instant updatedAt;
