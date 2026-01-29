@@ -1,43 +1,41 @@
 package vn.motoCare.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.Setter;
 import vn.motoCare.service.serviceImpl.AuthServiceImpl;
-import vn.motoCare.util.enumEntity.EnumProductType;
+import vn.motoCare.util.enumEntity.EnumStatusProduct;
 
 import java.time.Instant;
-import java.util.List;
 
 @Entity
 @Getter
 @Setter
-@Table(name = "tbl_product")
-public class ProductEntity {
+@Table(name = "tbl_prd_energy")
+public class EnergyProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String description;
+    private String name;
+
     @Enumerated(EnumType.STRING)
-    private EnumProductType type;
+    private EnumStatusProduct status;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "agency_id")
-    @JsonIgnore
-    private AgencyEntity agency;
+    @JoinColumn(name = "product_id")
+    private ProductEntity product;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
-    @JsonIgnore
-    private List<VehicleProductEntity> vehicleProducts;
+    @Min(0)
+    private long price;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
-    @JsonIgnore
-    private List<AccessoryProductEntity> accessoryProducts;
+    @Min(0)
+    private int quantity;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
-    @JsonIgnore
-    private List<EnergyProductEntity> energyProducts;
+    @Min(0)
+    private double capacity;
 
     private Instant createdAt;
     private Instant updatedAt;

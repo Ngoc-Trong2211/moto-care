@@ -10,7 +10,6 @@ import vn.motoCare.util.enumEntity.EnumStatusProduct;
 public interface AccessoryProductRepository
         extends JpaRepository<AccessoryProductEntity, Long>,
         JpaSpecificationExecutor<AccessoryProductEntity> {
-
     boolean existsByName(String name);
 
     boolean existsByNameAndIdNot(String name, Long id);
