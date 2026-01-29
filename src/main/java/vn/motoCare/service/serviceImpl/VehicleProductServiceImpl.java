@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import vn.motoCare.domain.ProductEntity;
 import vn.motoCare.domain.VehicleProductEntity;
 import vn.motoCare.domain.request.vehiclePrd.CreateVehicleProductRequest;
 import vn.motoCare.domain.request.vehiclePrd.UpdateVehicleProductRequest;
@@ -13,6 +14,7 @@ import vn.motoCare.domain.request.vehiclePrd.VehicleProductSpecificationRequest;
 import vn.motoCare.domain.response.vehiclePrd.CreateVehicleProductResponse;
 import vn.motoCare.domain.response.vehiclePrd.GetVehicleProductResponse;
 import vn.motoCare.domain.response.vehiclePrd.UpdateVehicleProductResponse;
+import vn.motoCare.repository.ProductRepository;
 import vn.motoCare.repository.VehicleProductRepository;
 import vn.motoCare.service.VehicleProductService;
 import vn.motoCare.service.specification.VehicleProductSpecification;
@@ -26,6 +28,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class VehicleProductServiceImpl implements VehicleProductService {
     private final VehicleProductRepository vehicleProductRepository;
+    private final ProductRepository productRepository;
 
     @Override
     public CreateVehicleProductResponse handleCreate(CreateVehicleProductRequest req)
@@ -38,6 +41,9 @@ public class VehicleProductServiceImpl implements VehicleProductService {
             throw new IdInvalidException("Vehicle product đã tồn tại!");
         }
 
+        ProductEntity product = this.productRepository.findById(req.getProductId())
+                .orElseThrow(() -> new IdInvalidException("Product không tồn tại!"));
+
         VehicleProductEntity entity = new VehicleProductEntity();
         entity.setBrand(req.getBrand());
         entity.setModel(req.getModel());
@@ -46,6 +52,7 @@ public class VehicleProductServiceImpl implements VehicleProductService {
         entity.setStatus(EnumStatusProduct.AVAILABLE);
         entity.setPrice(req.getPrice());
         entity.setQuantity(req.getQuantity());
+        entity.setProduct(product);
 
         this.vehicleProductRepository.save(entity);
 
@@ -64,6 +71,7 @@ public class VehicleProductServiceImpl implements VehicleProductService {
         res.setQuantity(entity.getQuantity());
         res.setCreatedAt(entity.getCreatedAt());
         res.setCreatedBy(entity.getCreatedBy());
+        res.setType(entity.getProduct().getType());
         return res;
     }
 
@@ -83,6 +91,9 @@ public class VehicleProductServiceImpl implements VehicleProductService {
             throw new IdInvalidException("Vehicle product đã tồn tại!");
         }
 
+        ProductEntity product = this.productRepository.findById(req.getProductId())
+                .orElseThrow(() -> new IdInvalidException("Product không tồn tại!"));
+
         entity.setBrand(req.getBrand());
         entity.setModel(req.getModel());
         entity.setName(req.getName());
@@ -90,6 +101,7 @@ public class VehicleProductServiceImpl implements VehicleProductService {
         entity.setStatus(req.getStatus());
         entity.setPrice(req.getPrice());
         entity.setQuantity(req.getQuantity());
+        entity.setProduct(product);
 
         this.vehicleProductRepository.save(entity);
 
@@ -108,6 +120,7 @@ public class VehicleProductServiceImpl implements VehicleProductService {
         res.setQuantity(entity.getQuantity());
         res.setUpdatedAt(entity.getUpdatedAt());
         res.setUpdatedBy(entity.getUpdatedBy());
+        res.setType(entity.getProduct().getType());
         return res;
     }
 
@@ -141,6 +154,7 @@ public class VehicleProductServiceImpl implements VehicleProductService {
                             p.setQuantity(product.getQuantity());
                             p.setCreatedAt(product.getCreatedAt());
                             p.setCreatedBy(product.getCreatedBy());
+                            p.setType(product.getProduct().getType());
                             return p;
                         }).toList();
 
