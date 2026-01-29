@@ -1,47 +1,31 @@
 package vn.motoCare.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import vn.motoCare.service.serviceImpl.AuthServiceImpl;
-import vn.motoCare.util.enumEntity.EnumProductType;
 
 import java.time.Instant;
-import java.util.List;
+import java.time.LocalDate;
 
 @Entity
 @Getter
 @Setter
-@Table(name = "tbl_product")
-public class ProductEntity {
+@Table(name = "tbl_promotion")
+public class PromotionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private EnumProductType type;
+    private String title;
+    private String description;
+    private boolean active;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "agency_id")
-    @JsonIgnore
-    private AgencyEntity agency;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
-    @JsonIgnore
-    private List<VehicleProductEntity> vehicleProducts;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
-    @JsonIgnore
-    private List<AccessoryProductEntity> accessoryProducts;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
-    @JsonIgnore
-    private List<EnergyProductEntity> energyProducts;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
-    @JsonIgnore
-    private List<PromotionEntity> promotions;
+    @JoinColumn(name = "product_id")
+    private ProductEntity product;
 
     private Instant createdAt;
     private Instant updatedAt;
