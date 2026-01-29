@@ -28,4 +28,7 @@ public class CreateVehicleProductRequest {
 
     @NotNull
     private int quantity;
+
+    @NotNull
+    private Long productId;
 }

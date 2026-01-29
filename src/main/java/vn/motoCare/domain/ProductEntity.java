@@ -8,6 +8,7 @@ import vn.motoCare.service.serviceImpl.AuthServiceImpl;
 import vn.motoCare.util.enumEntity.EnumProductType;
 
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Getter
@@ -25,6 +26,10 @@ public class ProductEntity {
     @JoinColumn(name = "agency_id")
     @JsonIgnore
     private AgencyEntity agency;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
+    @JsonIgnore
+    private List<VehicleProductEntity> vehicleProducts;
 
     private Instant createdAt;
     private Instant updatedAt;

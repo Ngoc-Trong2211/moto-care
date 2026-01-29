@@ -1,6 +1,7 @@
 package vn.motoCare.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.Setter;
 import vn.motoCare.service.serviceImpl.AuthServiceImpl;
@@ -34,7 +35,14 @@ public class VehicleProductEntity {
     @Enumerated(EnumType.STRING)
     private EnumStatusProduct status;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private ProductEntity product;
+
+    @Min(0)
     private long price;
+
+    @Min(0)
     private int quantity;
 
     private Instant createdAt;

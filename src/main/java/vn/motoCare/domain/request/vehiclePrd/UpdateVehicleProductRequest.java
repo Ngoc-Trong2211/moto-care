@@ -30,6 +30,12 @@ public class UpdateVehicleProductRequest {
     @NotNull
     private EnumStatusProduct status;
 
+    @NotNull
     private long price;
+
+    @NotNull
     private int quantity;
+
+    @NotNull
+    private Long productId;
 }
