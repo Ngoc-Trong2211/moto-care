@@ -1,11 +1,13 @@
 package vn.motoCare.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import vn.motoCare.service.serviceImpl.AuthServiceImpl;
 
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,6 +22,10 @@ public class AgencyEntity {
     private String address;
     private int phone;
     private boolean active;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "agency")
+    @JsonIgnore
+    private List<ProductEntity> products;
 
     private Instant createdAt;
     private Instant updatedAt;
