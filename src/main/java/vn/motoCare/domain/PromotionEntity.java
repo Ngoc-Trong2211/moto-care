@@ -24,8 +24,8 @@ public class PromotionEntity {
     private LocalDate endDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private ProductEntity product;
+    @JoinColumn(name = "agency_id")
+    private AgencyEntity agencyEntity;
 
     private Instant createdAt;
     private Instant updatedAt;

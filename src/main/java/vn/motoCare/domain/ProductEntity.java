@@ -39,10 +39,6 @@ public class ProductEntity {
     @JsonIgnore
     private List<EnergyProductEntity> energyProducts;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
-    @JsonIgnore
-    private List<PromotionEntity> promotions;
-
     private Instant createdAt;
     private Instant updatedAt;
     private String createdBy;
