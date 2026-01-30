@@ -5,44 +5,34 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import vn.motoCare.service.serviceImpl.AuthServiceImpl;
+import vn.motoCare.util.enumEntity.EnumStatusReminder;
 
 import java.time.Instant;
-import java.util.List;
+import java.time.LocalDate;
 
 @Entity
 @Getter
 @Setter
-@Table(name = "tbl_vehicle")
-public class VehicleEntity {
+@Table(name = "tbl_maintenance_reminder")
+public class MaintenanceReminderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "vehicle_id", nullable = false)
     @JsonIgnore
-    private UserEntity user;
-
-    private String brand;
-    private String model;
-    private String licensePlate;
+    private VehicleEntity vehicle;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "agency_id", nullable = false)
+    @JoinColumn(name = "maintenance_type_id", nullable = false)
     @JsonIgnore
-    private AgencyEntity agency;
+    private MaintenanceTypeEntity maintenanceType;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "vehicle")
-    @JsonIgnore
-    private List<AppointmentEntity> appointments;
+    private LocalDate dueDate;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "vehicle")
-    @JsonIgnore
-    private List<MaintenanceEntity> maintenances;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "vehicle")
-    @JsonIgnore
-    private List<MaintenanceReminderEntity> maintenanceReminders;
+    @Enumerated(EnumType.STRING)
+    private EnumStatusReminder status;
 
     private Instant createdAt;
     private Instant updatedAt;

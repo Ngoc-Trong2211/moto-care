@@ -59,7 +59,6 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public UpdatePermissionResponse handleUpdatePermission(UpdatePermissionRequest req
     ) throws IdInvalidException {
-
         PermissionEntity permission = permissionRepository.findById(req.getId())
                 .orElseThrow(() -> new IdInvalidException("Không tìm thấy permission!"));
 

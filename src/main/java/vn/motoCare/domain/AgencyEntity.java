@@ -39,6 +39,10 @@ public class AgencyEntity {
     @JsonIgnore
     private List<AppointmentEntity> appointments;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "agency")
+    @JsonIgnore
+    private List<MaintenanceEntity> maintenances;
+
     private Instant createdAt;
     private Instant updatedAt;
     private String createdBy;

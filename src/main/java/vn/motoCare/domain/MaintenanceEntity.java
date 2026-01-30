@@ -7,42 +7,36 @@ import lombok.Setter;
 import vn.motoCare.service.serviceImpl.AuthServiceImpl;
 
 import java.time.Instant;
-import java.util.List;
+import java.time.LocalDate;
 
 @Entity
 @Getter
 @Setter
-@Table(name = "tbl_vehicle")
-public class VehicleEntity {
+@Table(name = "tbl_maintenance")
+public class MaintenanceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "vehicle_id", nullable = false)
     @JsonIgnore
-    private UserEntity user;
+    private VehicleEntity vehicle;
 
-    private String brand;
-    private String model;
-    private String licensePlate;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "maintenance_type_id", nullable = false)
+    @JsonIgnore
+    private MaintenanceTypeEntity maintenanceType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "agency_id", nullable = false)
     @JsonIgnore
     private AgencyEntity agency;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "vehicle")
-    @JsonIgnore
-    private List<AppointmentEntity> appointments;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "vehicle")
-    @JsonIgnore
-    private List<MaintenanceEntity> maintenances;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "vehicle")
-    @JsonIgnore
-    private List<MaintenanceReminderEntity> maintenanceReminders;
+    private LocalDate maintenanceDate;
+    private int km;
+    private String note;
+    private LocalDate dueDate;
 
     private Instant createdAt;
     private Instant updatedAt;
