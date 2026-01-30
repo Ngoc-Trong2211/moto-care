@@ -5,39 +5,39 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import vn.motoCare.service.serviceImpl.AuthServiceImpl;
+import vn.motoCare.util.enumEntity.EnumAppointmentStatus;
 
 import java.time.Instant;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
-@Table(name = "tbl_agency")
-public class AgencyEntity {
+@Table(name = "tbl_appointment")
+public class AppointmentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String email;
-    private String address;
-    private int phone;
-    private boolean active;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "agency")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnore
-    private List<ProductEntity> products;
+    private UserEntity user;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "agencyEntity")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "vehicle_id", nullable = false)
     @JsonIgnore
-    private List<PromotionEntity> promotions;
+    private VehicleEntity vehicle;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "agency")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "agency_id", nullable = false)
     @JsonIgnore
-    private List<VehicleEntity> vehicles;
+    private AgencyEntity agency;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "agency")
-    @JsonIgnore
-    private List<AppointmentEntity> appointments;
+    private LocalDateTime appointmentDate;
+
+    @Enumerated(EnumType.STRING)
+    private EnumAppointmentStatus status;
 
     private Instant createdAt;
     private Instant updatedAt;
@@ -45,13 +45,13 @@ public class AgencyEntity {
     private String updatedBy;
 
     @PrePersist
-    public void handleCreated(){
+    public void handleCreated() {
         this.createdAt = Instant.now();
         this.createdBy = AuthServiceImpl.getCurrentUserLogin().isPresent() ? AuthServiceImpl.getCurrentUserLogin().get() : "";
     }
 
     @PreUpdate
-    public void handleUpdated(){
+    public void handleUpdated() {
         this.updatedAt = Instant.now();
         this.updatedBy = AuthServiceImpl.getCurrentUserLogin().isPresent() ? AuthServiceImpl.getCurrentUserLogin().get() : "";
     }
