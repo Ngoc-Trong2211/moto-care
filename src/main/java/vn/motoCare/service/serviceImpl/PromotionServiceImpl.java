@@ -4,10 +4,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import vn.motoCare.domain.AgencyEntity;
 import vn.motoCare.domain.PromotionEntity;
 import vn.motoCare.domain.request.promotion.CreatePromotionRequest;
+import vn.motoCare.domain.request.promotion.PromotionSpecificationRequest;
 import vn.motoCare.domain.request.promotion.UpdatePromotionRequest;
 import vn.motoCare.domain.response.promotion.CreatePromotionResponse;
 import vn.motoCare.domain.response.promotion.GetPromotionResponse;
@@ -15,6 +17,7 @@ import vn.motoCare.domain.response.promotion.UpdatePromotionResponse;
 import vn.motoCare.repository.AgencyRepository;
 import vn.motoCare.repository.PromotionRepository;
 import vn.motoCare.service.PromotionService;
+import vn.motoCare.service.specification.PromotionSpecification;
 import vn.motoCare.util.exception.IdInvalidException;
 
 import java.util.List;
@@ -61,24 +64,25 @@ public class PromotionServiceImpl implements PromotionService {
     }
 
     @Override
-    public GetPromotionResponse handleGetPromotions(Pageable pageable) {
-        Page<PromotionEntity> pageData = promotionRepository.findAll(pageable);
+    public GetPromotionResponse handleGetPromotions(Pageable pageable, PromotionSpecificationRequest req) {
+        Specification<PromotionEntity> spec = PromotionSpecification.specPromotion(req);
+        Page<PromotionEntity> promotionPage = promotionRepository.findAll(spec, pageable);
 
         GetPromotionResponse response = new GetPromotionResponse();
         response.setPage(
                 new GetPromotionResponse.DataPage(
-                        pageData.getNumber(),
-                        pageData.getSize(),
-                        pageData.getNumberOfElements(),
-                        pageData.getTotalPages()
+                        promotionPage.getNumber(),
+                        promotionPage.getSize(),
+                        promotionPage.getNumberOfElements(),
+                        promotionPage.getTotalPages()
                 )
         );
 
-        List<GetPromotionResponse.Promotion> promotions = pageData.getContent()
+        List<GetPromotionResponse.Promotion> promotionList = promotionPage.getContent()
                 .stream()
                 .map(PromotionServiceImpl::mapToPromotion)
                 .toList();
-        response.setPromotions(promotions);
+        response.setPromotions(promotionList);
 
         return response;
     }

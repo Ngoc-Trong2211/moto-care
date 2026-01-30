@@ -4,12 +4,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import vn.motoCare.domain.AgencyEntity;
 import vn.motoCare.domain.UserEntity;
 import vn.motoCare.domain.VehicleEntity;
 import vn.motoCare.domain.request.vehicle.CreateVehicleRequest;
 import vn.motoCare.domain.request.vehicle.UpdateVehicleRequest;
+import vn.motoCare.domain.request.vehicle.VehicleSpecificationRequest;
 import vn.motoCare.domain.response.vehicle.CreateVehicleResponse;
 import vn.motoCare.domain.response.vehicle.GetVehicleResponse;
 import vn.motoCare.domain.response.vehicle.UpdateVehicleResponse;
@@ -17,6 +19,7 @@ import vn.motoCare.repository.AgencyRepository;
 import vn.motoCare.repository.UserRepository;
 import vn.motoCare.repository.VehicleRepository;
 import vn.motoCare.service.VehicleService;
+import vn.motoCare.service.specification.VehicleSpecification;
 import vn.motoCare.util.exception.IdInvalidException;
 
 import java.util.List;
@@ -67,8 +70,9 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public GetVehicleResponse handleGetVehicles(Pageable pageable) {
-        Page<VehicleEntity> pageData = vehicleRepository.findAll(pageable);
+    public GetVehicleResponse handleGetVehicles(Pageable pageable, VehicleSpecificationRequest req) {
+        Specification<VehicleEntity> spec = VehicleSpecification.specVehicle(req);
+        Page<VehicleEntity> pageData = vehicleRepository.findAll(spec, pageable);
 
         GetVehicleResponse response = new GetVehicleResponse();
         response.setPage(

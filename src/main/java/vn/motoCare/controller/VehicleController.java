@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.motoCare.domain.request.vehicle.CreateVehicleRequest;
 import vn.motoCare.domain.request.vehicle.UpdateVehicleRequest;
+import vn.motoCare.domain.request.vehicle.VehicleSpecificationRequest;
 import vn.motoCare.domain.response.vehicle.CreateVehicleResponse;
 import vn.motoCare.domain.response.vehicle.GetVehicleResponse;
 import vn.motoCare.domain.response.vehicle.UpdateVehicleResponse;
@@ -32,8 +33,8 @@ public class VehicleController {
 
     @GetMapping("/vehicles")
     @ApiMessage(message = "Lấy danh sách xe thành công")
-    public ResponseEntity<GetVehicleResponse> getVehicles(Pageable pageable) {
-        return ResponseEntity.ok(vehicleService.handleGetVehicles(pageable));
+    public ResponseEntity<GetVehicleResponse> getVehicles(Pageable pageable, VehicleSpecificationRequest req) {
+        return ResponseEntity.ok(vehicleService.handleGetVehicles(pageable, req));
     }
 
     @PutMapping("/vehicles")
