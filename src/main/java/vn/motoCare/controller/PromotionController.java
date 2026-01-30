@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.motoCare.domain.request.promotion.CreatePromotionRequest;
+import vn.motoCare.domain.request.promotion.PromotionSpecificationRequest;
 import vn.motoCare.domain.request.promotion.UpdatePromotionRequest;
 import vn.motoCare.domain.response.promotion.CreatePromotionResponse;
 import vn.motoCare.domain.response.promotion.GetPromotionResponse;
@@ -32,8 +33,8 @@ public class PromotionController {
 
     @GetMapping("/promotions")
     @ApiMessage(message = "Lấy danh sách khuyến mãi thành công")
-    public ResponseEntity<GetPromotionResponse> getPromotions(Pageable pageable) {
-        return ResponseEntity.ok(promotionService.handleGetPromotions(pageable));
+    public ResponseEntity<GetPromotionResponse> getPromotions(Pageable pageable, PromotionSpecificationRequest req) {
+        return ResponseEntity.ok(promotionService.handleGetPromotions(pageable, req));
     }
 
     @PutMapping("/promotions")

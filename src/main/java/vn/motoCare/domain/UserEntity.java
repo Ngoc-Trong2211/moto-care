@@ -1,11 +1,13 @@
 package vn.motoCare.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import vn.motoCare.util.enumEntity.StatusEnumUser;
 
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Table(name = "tbl_user")
@@ -34,6 +36,10 @@ public class UserEntity {
     @ManyToOne
     @JoinColumn(name = "role_id")
     private RoleEntity role;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @JsonIgnore
+    private List<VehicleEntity> vehicles;
 
     @PrePersist
     public void handleCreated(){
