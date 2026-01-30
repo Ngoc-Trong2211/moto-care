@@ -7,6 +7,7 @@ import lombok.Setter;
 import vn.motoCare.service.serviceImpl.AuthServiceImpl;
 
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Getter
@@ -30,6 +31,10 @@ public class VehicleEntity {
     @JoinColumn(name = "agency_id", nullable = false)
     @JsonIgnore
     private AgencyEntity agency;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "vehicle")
+    @JsonIgnore
+    private List<AppointmentEntity> appointments;
 
     private Instant createdAt;
     private Instant updatedAt;
