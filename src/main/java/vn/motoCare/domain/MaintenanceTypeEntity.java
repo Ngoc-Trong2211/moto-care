@@ -12,35 +12,22 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Table(name = "tbl_vehicle")
-public class VehicleEntity {
+@Table(name = "tbl_maintenance_type")
+public class MaintenanceTypeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    @JsonIgnore
-    private UserEntity user;
+    private String name;
+    private int periodKm;
+    private int periodMonth;
+    private String description;
 
-    private String brand;
-    private String model;
-    private String licensePlate;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "agency_id", nullable = false)
-    @JsonIgnore
-    private AgencyEntity agency;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "vehicle")
-    @JsonIgnore
-    private List<AppointmentEntity> appointments;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "vehicle")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "maintenanceType")
     @JsonIgnore
     private List<MaintenanceEntity> maintenances;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "vehicle")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "maintenanceType")
     @JsonIgnore
     private List<MaintenanceReminderEntity> maintenanceReminders;
 

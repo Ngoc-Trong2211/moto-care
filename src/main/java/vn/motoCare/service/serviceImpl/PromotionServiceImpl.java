@@ -16,8 +16,10 @@ import vn.motoCare.domain.response.promotion.GetPromotionResponse;
 import vn.motoCare.domain.response.promotion.UpdatePromotionResponse;
 import vn.motoCare.repository.AgencyRepository;
 import vn.motoCare.repository.PromotionRepository;
+import vn.motoCare.service.NotificationService;
 import vn.motoCare.service.PromotionService;
 import vn.motoCare.service.specification.PromotionSpecification;
+import vn.motoCare.util.enumEntity.EnumTypeNotification;
 import vn.motoCare.util.exception.IdInvalidException;
 
 import java.util.List;
@@ -28,6 +30,7 @@ import java.util.List;
 public class PromotionServiceImpl implements PromotionService {
     private final PromotionRepository promotionRepository;
     private final AgencyRepository agencyRepository;
+    private final NotificationService notificationService;
 
     @Override
     public CreatePromotionResponse handleCreate(CreatePromotionRequest request) {
@@ -43,6 +46,14 @@ public class PromotionServiceImpl implements PromotionService {
         promotion.setAgencyEntity(agency);
 
         PromotionEntity saved = promotionRepository.save(promotion);
+        
+        // Create notification for all users if promotion is active
+        if (saved.isActive()) {
+            String title = "New Promotion Available";
+            String content = saved.getTitle() + ": " + (saved.getDescription() != null ? saved.getDescription() : "");
+            notificationService.createNotificationForAllUsers(title, content, EnumTypeNotification.PROMOTION);
+        }
+        
         return toCreateResponse(saved);
     }
 

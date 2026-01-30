@@ -62,7 +62,6 @@ public class ProductServiceImpl implements ProductService {
         Page<ProductEntity> pageData = productRepository.findAll(pageable);
 
         GetProductResponse response = new GetProductResponse();
-
         response.setPage(
                 new GetProductResponse.DataPage(
                         pageData.getNumber(),

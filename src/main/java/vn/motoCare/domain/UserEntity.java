@@ -45,6 +45,10 @@ public class UserEntity {
     @JsonIgnore
     private List<AppointmentEntity> appointments;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @JsonIgnore
+    private List<NotificationEntity> notifications;
+
     @PrePersist
     public void handleCreated(){
         this.createdAt = Instant.now();

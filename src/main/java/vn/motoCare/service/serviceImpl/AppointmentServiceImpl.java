@@ -23,7 +23,10 @@ import vn.motoCare.repository.AppointmentRepository;
 import vn.motoCare.repository.UserRepository;
 import vn.motoCare.repository.VehicleRepository;
 import vn.motoCare.service.AppointmentService;
+import vn.motoCare.service.NotificationService;
 import vn.motoCare.service.specification.AppointmentSpecification;
+import vn.motoCare.util.enumEntity.EnumAppointmentStatus;
+import vn.motoCare.util.enumEntity.EnumTypeNotification;
 import vn.motoCare.util.exception.IdInvalidException;
 
 import java.util.List;
@@ -36,6 +39,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final UserRepository userRepository;
     private final VehicleRepository vehicleRepository;
     private final AgencyRepository agencyRepository;
+    private final NotificationService notificationService;
 
     @Override
     public CreateAppointmentResponse handleCreate(CreateAppointmentRequest request) {
@@ -136,6 +140,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         AgencyEntity agency = agencyRepository.findById(request.getAgencyId())
                 .orElseThrow(() -> new IdInvalidException("Không tồn tại agency này!"));
 
+        EnumAppointmentStatus oldStatus = appointment.getStatus();
         appointment.setUser(user);
         appointment.setVehicle(vehicle);
         appointment.setAgency(agency);
@@ -143,6 +148,17 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointment.setStatus(request.getStatus());
 
         AppointmentEntity saved = appointmentRepository.save(appointment);
+        
+        // Create notification when status changes
+        if (oldStatus != request.getStatus() && saved.getUser() != null) {
+            Long userId = saved.getUser().getId();
+            String title = "Appointment Status Update";
+            String content = "Your appointment for vehicle " + 
+                    (saved.getVehicle() != null ? saved.getVehicle().getLicensePlate() : "") +
+                    " has been updated to " + request.getStatus().name();
+            notificationService.createNotificationForUser(userId, title, content, EnumTypeNotification.SYSTEM);
+        }
+        
         return toUpdateResponse(saved);
     }
 
@@ -172,8 +188,21 @@ public class AppointmentServiceImpl implements AppointmentService {
     public UpdateAppointmentStatusResponse handleUpdateStatus(Long id, UpdateAppointmentStatusRequest request) {
         AppointmentEntity appointment = appointmentRepository.findById(id)
                 .orElseThrow(() -> new IdInvalidException("Không tồn tại lịch hẹn này!"));
+        
+        EnumAppointmentStatus oldStatus = appointment.getStatus();
         appointment.setStatus(request.getStatus());
         AppointmentEntity saved = appointmentRepository.save(appointment);
+        
+        // Create notification when status changes
+        if (oldStatus != request.getStatus() && saved.getUser() != null) {
+            Long userId = saved.getUser().getId();
+            String title = "Appointment Status Update";
+            String content = "Your appointment for vehicle " + 
+                    (saved.getVehicle() != null ? saved.getVehicle().getLicensePlate() : "") +
+                    " status has been changed to " + request.getStatus().name();
+            notificationService.createNotificationForUser(userId, title, content, EnumTypeNotification.SYSTEM);
+        }
+        
         return toUpdateStatusResponse(saved);
     }
 

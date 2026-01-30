@@ -63,7 +63,6 @@ public class EnergyProductServiceImpl implements EnergyProductService {
     @Override
     public UpdateEnergyProductResponse handleUpdate(UpdateEnergyProductRequest req)
             throws IdInvalidException {
-
         EnergyProductEntity entity = energyProductRepository.findById(req.getId())
                 .orElseThrow(() -> new IdInvalidException("Energy product không tồn tại!"));
 
