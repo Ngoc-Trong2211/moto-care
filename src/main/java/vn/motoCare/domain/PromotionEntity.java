@@ -1,35 +1,31 @@
 package vn.motoCare.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import vn.motoCare.service.serviceImpl.AuthServiceImpl;
 
 import java.time.Instant;
-import java.util.List;
+import java.time.LocalDate;
 
 @Entity
 @Getter
 @Setter
-@Table(name = "tbl_agency")
-public class AgencyEntity {
+@Table(name = "tbl_promotion")
+public class PromotionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String email;
-    private String address;
-    private int phone;
+
+    private String title;
+    private String description;
     private boolean active;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "agency")
-    @JsonIgnore
-    private List<ProductEntity> products;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "agencyEntity")
-    @JsonIgnore
-    private List<PromotionEntity> promotions;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "agency_id")
+    private AgencyEntity agencyEntity;
 
     private Instant createdAt;
     private Instant updatedAt;
