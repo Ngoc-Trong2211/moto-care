@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${promotionTitle}">Promotion</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: white; padding: 24px; border-radius: 8px 8px 0 0; }
+        .content { background: #f8fafc; padding: 24px; border: 1px solid #e2e8f0; border-top: none; border-radius: 0 0 8px 8px; }
+        h1 { margin: 0; font-size: 1.5rem; }
+        .meta { color: #64748b; font-size: 0.9rem; margin-top: 8px; }
+        .description { margin: 16px 0; white-space: pre-wrap; }
+        .discount { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 12px; margin: 16px 0; border-radius: 4px; }
+        .footer { margin-top: 24px; font-size: 0.85rem; color: #64748b; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 th:text="${promotionTitle}">Promotion Title</h1>
+        <div class="meta">
+            <span th:if="${agencyName}" th:text="'From: ' + ${agencyName}">Agency</span>
+            <span th:if="${startDate}" th:text="' | Valid: ' + ${startDate} + ' – ' + ${endDate}">Dates</span>
+        </div>
+    </div>
+    <div class="content">
+        <div class="description" th:if="${promotionDescription}" th:text="${promotionDescription}">
+            Promotion description text.
+        </div>
+        <div class="discount" th:if="${discountValue}">
+            <strong>Discount:</strong> <span th:text="${discountValue}">Optional discount value</span>
+        </div>
+        <div class="meta" th:if="${startDate}">
+            <strong>Start:</strong> <span th:text="${startDate}">Start date</span><br/>
+            <strong>End:</strong> <span th:text="${endDate}">End date</span>
+        </div>
+        <div class="footer">
+            This is an automated message from MotoCare. Visit your agency for more details.
+        </div>
+    </div>
+</body>
+</html>
