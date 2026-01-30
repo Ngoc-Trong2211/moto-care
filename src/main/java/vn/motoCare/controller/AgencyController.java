@@ -53,7 +53,7 @@ public class AgencyController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body("Xóa thành công");
     }
 
-    @PatchMapping("/agencies/active")
+    @PatchMapping("/agencies/{id}/active")
     @ApiMessage(message = "Cập nhật trạng thái agency thành công")
     public ResponseEntity<String> updateAgencyActive(@PathVariable Long id) throws IdInvalidException {
         this.agencyService.handleUpdateAgencyActive(id);
