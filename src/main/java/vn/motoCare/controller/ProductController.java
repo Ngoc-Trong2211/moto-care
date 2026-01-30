@@ -25,7 +25,7 @@ public class ProductController {
     @ApiMessage(message = "tạo mới product")
     public ResponseEntity<ProductResponse> createProduct(
             @RequestBody @Valid CreateProductRequest request) {
-        return ResponseEntity.ok(productService.handleCreate(request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.handleCreate(request));
     }
 
     @GetMapping("/products")
@@ -40,6 +40,6 @@ public class ProductController {
         this.productService.handleDeleteProduct(id);
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
-                .body("Cập nhật thành công");
+                .body("Xóa thành công");
     }
 }
